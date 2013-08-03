@@ -45,7 +45,12 @@ class SmtpSettings extends Form\Form
             'options' => array(
                 'label' => 'Host',
             ),
-        ));        
+        ));
+        $button = new Form\Element\Button('save');
+        $button->setAttribute('type', 'submit')
+               ->setLabel('Save');
+        
+        $this->add($button);
     }
     
     public function getInputFilter()
@@ -78,10 +83,12 @@ class SmtpSettings extends Form\Form
                     )
                 ),
                 'validators' => array(
-                    'name' => 'notempty',
-                    'options' => array(
-                        'message' => 'You must provide the password.',
-                    ),
+                    array(
+                        'name' => 'notempty',
+                        'options' => array(
+                            'message' => 'You must provide the password.',
+                        ),
+                    )
                 ),
             )))->add($factory->createInput(array(
                 'name' => 'host',
@@ -94,7 +101,7 @@ class SmtpSettings extends Form\Form
                     array(
                         'name' => 'hostname',
                         'options' => array(
-                            'allowed' => Validator\Hostname::ALLOW_ALL,
+                            'allow' => Validator\Hostname::ALLOW_ALL,
                             'message' => 'Provide a valid SMTP host.'
                         ),
                     ),

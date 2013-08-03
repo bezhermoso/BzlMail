@@ -49,7 +49,27 @@ return array(
                                 'action' => 'process-settings-1',
                             )
                         )
-                    )
+                    ),
+                    'process-transport-settings' => array(
+                        'type' => 'literal',
+                        'options' => array(
+                            'route' => '/process-transport-settings',
+                            'defaults' => array(
+                                'controller' => 'BzlMail\Controller\Index',
+                                'action' => 'process-transport-settings',
+                            )
+                        )
+                    ),
+                    'transport-settings' => array(
+                        'type' => 'literal',
+                        'options' => array(
+                            'route' => '/transport-settings',
+                            'defaults' => array(
+                                'controller' => 'BzlMail\Controller\Index',
+                                'action' => 'transport-settings',
+                            )
+                        )
+                    ),
                 ),
             ),
         ),
