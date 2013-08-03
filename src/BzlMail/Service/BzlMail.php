@@ -53,7 +53,7 @@ class BzlMail
     public function getTransportOptions()
     {
         if($this->transportOptions === null){
-            $this->transportOptions = new Transport\TransportOptions($this->config->transport_options, $this->getServiceLocator());
+            $this->transportOptions = new Transport\TransportOptions($this->config->transport_options->toArray(), $this->getServiceLocator());
         }
         return $this->transportOptions;
     }
@@ -68,8 +68,28 @@ class BzlMail
         }
     }
     
+    /**
+     * 
+     * @param type $fallbackToDefault
+     * @return \Zend\Mail\Transport\TransportInterface
+     */
     public function getChosenTransportOption($fallbackToDefault = true)
     {
+        $options = $this->getTransportOptions();
+        $storage = $this->getStorage();
+        
+        $settings = $storage->get();
+        
+        if($settings && isset($options[$settings->getTransport()])){
+            
+            /* @var $option Transport\Option\AbstractOption */
+            $option = $options[$settings->getTransport()];
+            $option->setSettings($settings->getSettings());
+            return $option;
+            
+        }else if($fallbackToDefault === true){
+            return $this->getDefaultTransportOption();
+        }
         
     }
     
@@ -79,11 +99,25 @@ class BzlMail
         return $this;
     }
     
+    /**
+     * @return Settings\Storage\Storage
+     */
     public function getStorage()
     {
         if($this->storage === null){
-            
+            $storage = new Settings\Storage\Storage(new Settings\Storage\Adapter\JsonConfig('data/BzlMail/settings.json'));
+            $this->storage = $storage;
         }
+        return $this->storage;
+    }
+    
+    /**
+     * @param \BzlMail\Settings\Settings $settings
+     */
+    public function saveSettings(Settings\Settings $settings)
+    {
+       $storage = $this->getStorage();
+       $storage->save($settings);
     }
         
 }

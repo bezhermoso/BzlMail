@@ -19,6 +19,7 @@ class TransportOptions implements \Iterator, \ArrayAccess
     
     public function __construct($options, ServiceLocatorInterface $serviceLocator)
     {
+        $this->counter = 0;
         $this->options = $options;
         $this->setServiceLocator($serviceLocator);
     }
@@ -46,6 +47,8 @@ class TransportOptions implements \Iterator, \ArrayAccess
                 $optionObject = $this->getServiceLocator()->get($option);
             }elseif(class_exists($option)){
                 $optionObject = new $option();
+            }else{
+                throw new \Exception($option . ' cannot be resolved.');
             }
             if($optionObject instanceof Option\AbstractOption){
                 $this->options[$key] = $optionObject;
