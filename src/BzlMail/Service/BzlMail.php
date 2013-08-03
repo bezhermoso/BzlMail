@@ -119,5 +119,9 @@ class BzlMail
        $storage = $this->getStorage();
        $storage->save($settings);
     }
-        
+    
+    public function getSettings()
+    {
+        return $this->getStorage()->get();
+    }
 }

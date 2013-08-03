@@ -26,7 +26,6 @@ class BzlMailServiceTest extends \PHPUnit_Framework_TestCase
         if(file_exists('settings.json')){
             unlink('settings.json');
         }
-        
     }
     
     public function testBundledTransportOptionsExist()
