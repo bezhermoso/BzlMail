@@ -46,6 +46,17 @@ class SmtpSettings extends Form\Form
                 'label' => 'Host',
             ),
         ));
+        
+        $this->add(array(
+            'name' => 'port',
+            'attributes' => array(
+                'type' => 'number',
+            ),
+            'options' => array(
+                'label' => 'Port',
+            ),
+        ));
+        
         $button = new Form\Element\Button('save');
         $button->setAttribute('type', 'submit')
                ->setLabel('Save');
