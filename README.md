@@ -1,4 +1,8 @@
 bzl-mail
 ========
 
-Email transport configuration module via forms for Zend Framework 2
+Email module for Zend Framework 2
+
+* Transport settings via forms [DEVELOPMENT ONGOING]
+* Email sending facade (easier HTML email composition, adding attachments, etc) [PENDING]
+* Email queueing [PENDING]
