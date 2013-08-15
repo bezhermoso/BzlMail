@@ -21,6 +21,11 @@ return array(
             'BzlMail\Controller\Index' => 'BzlMail\Controller\IndexController',
         ),
     ),
+    'controller_plugins' => array(
+        'invokables' => array(
+            'bzlTransport' => 'BzlMail\Controller\Plugin\BzlTransport',
+        )
+    ),
     'router' => array(
         'routes' => array(
             'bzl-mail' => array(

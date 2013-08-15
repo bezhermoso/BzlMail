@@ -49,8 +49,6 @@ class IndexController extends AbstractActionController
         $form = $this->getTransportForm();
         $settings = $service->getSettings();
         
-        $option = $service->getChosenOption();
-        
         if ($settings) {
             $form->get('transport')->setValue($settings->getTransport());
         }
