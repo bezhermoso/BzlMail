@@ -79,7 +79,6 @@ class BzlMailServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf($config->transport_options->smtp, $option);
         $this->assertInstanceOf('Zend\Mail\Transport\Smtp', $option->getTransport());
         
-        
         $secondService = new Service\BzlMail($config, $this->serviceManager);
         $secondService->setStorage($storage);
         

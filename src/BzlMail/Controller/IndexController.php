@@ -29,7 +29,7 @@ class IndexController extends AbstractActionController
     
     public function getSessionContainer()
     {
-        if($this->session === null){
+        if ($this->session === null) {
             $this->session = new \Zend\Session\Container('bzlmail_transport_selection');
         }
         return $this->session;
@@ -37,7 +37,7 @@ class IndexController extends AbstractActionController
     
     public function getTransportForm()
     {
-        if($this->transportForm === null){
+        if ($this->transportForm === null) {
             $this->transportForm = new \BzlMail\Form\TransportOptions($this->getService()->getTransportOptions());
         }
         return $this->transportForm;
@@ -46,15 +46,16 @@ class IndexController extends AbstractActionController
     public function settingsAction()
     {
         $form = $this->getTransportForm();
-        $form->setAttribute('action', $this->url()->fromRoute('bzl-mail/process-settings-1'));
+        $form->setAttribute('action', $this->url()->fromRoute('bzl-mail/process-settings'));
         $form->setAttribute('method', 'post');
         return array(
             'form' => $form,
             'options' => $this->getService()->getTransportOptions(),
+            'settings' => $this->getService()->getSettings(),
         );
     }
     
-    public function processSettings1Action()
+    public function processSettingsAction()
     {
         $transport = $this->params()->fromPost('transport');
         
@@ -62,28 +63,28 @@ class IndexController extends AbstractActionController
         
         $form->setData($this->params()->fromPost());
         
-        if($form->isValid()){
+        if ($form->isValid()) {
                         
             $transport = $form->get('transport')->getValue();
-            if($transport){
+            if ($transport) {
                 
                 $service = $this->getService();
                 $transportOptions = $service->getTransportOptions();
 
-                if(isset($transportOptions[$transport])){
+                if (isset($transportOptions[$transport])) {
                     $option = $transportOptions[$transport];
                     /* @var $option \BzlMail\Transport\Option\AbstractOption */
-                    if($option->getForm()){
+                    if ($option->getForm()) {
                         return $this->prg($this->url()->fromRoute('bzl-mail/transport-settings'), true);
-                    }else{
+                    } else {
                         $settings = new \BzlMail\Settings\Settings($transport, null);
                         $service->saveSettings($settings);
-                        //Success message.
+                        $this->flashMessenger()->addSuccessMessage('Settings saved.');
                     }
                 }        
             }
         }else{
-            foreach($form->getInputFilter()->getInvalidInput() as $input){
+            foreach ($form->getInputFilter()->getInvalidInput() as $input) {
                 $this->flashMessenger()->addErrorMessage($input->getErrorMessage());
             }
         }

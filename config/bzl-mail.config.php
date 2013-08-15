@@ -40,13 +40,13 @@ return array(
                             )
                         )
                     ),
-                    'process-settings-1' => array(
+                    'process-settings' => array(
                         'type' => 'literal',
                         'options' => array(
-                            'route' => '/process-settings-1',
+                            'route' => '/process-settings',
                             'defaults' => array(
                                 'controller' => 'BzlMail\Controller\Index',
-                                'action' => 'process-settings-1',
+                                'action' => 'process-settings',
                             )
                         )
                     ),
