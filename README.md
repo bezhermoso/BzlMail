@@ -1,4 +1,4 @@
-bzl-mail
+BzlMail
 ========
 
 Email module for Zend Framework 2
