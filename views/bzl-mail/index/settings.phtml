@@ -4,14 +4,22 @@
 <div class="container">
     <div class="row">
         <div class="span12">
-            <h3>
+            <legend>
+                <h3>Email Transport Settings</h3>
+            </legend>
+            <h5>
                 Select preferred transport
-            </h3>
+            </h5>
             <?php echo $this->form()->openTag($form); ?>
             <dl class="dl-horizontal">
                 <?php foreach($form->get('transport')->getValueOptions() as $value => $label): ?>
                 <dt>
-                    <input type="radio" name="transport" value="<?php echo $value; ?>" <?php echo $value == $settings->getTransport() ? 'checked' : ''; ?>/>
+                    <input 
+                        type="radio" 
+                        name="transport" 
+                        value="<?php echo $value; ?>" 
+                        <?php echo $value == $form->get('transport')->getValue() ? 'checked' : ''; ?>
+                    />
                 </dt>
                 <dd>
                     <h5>

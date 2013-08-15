@@ -1,7 +1,9 @@
 <div class="container">
     <div class="row">
         <div class="span12">
-            <h3><?php echo $option->getName(); ?> Settings</h3>
+            <legend>
+                <h3><?php echo $option->getName(); ?> Settings</h3>
+            </legend>
             <?php echo $this->form()->openTag($option->getForm()); ?>
             <dl>
                 <?php foreach($option->getForm() as $element): ?>

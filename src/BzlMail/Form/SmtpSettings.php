@@ -57,6 +57,26 @@ class SmtpSettings extends Form\Form
             ),
         ));
         
+        $authSelect = new Form\Element\Select('authentication', array(
+            'value_options' => array(
+                'plain' => 'Plain',
+                'login' => 'Login',
+                'crammd5' => 'CRAM-MD5',
+            )
+        ));
+        $authSelect->setLabel('Authentication method');
+        
+        $encryptionSelect = new Form\Element\Select('encryption', array(
+            'value_options' => array(
+                'tls' => 'TLS',
+                'ssl' => 'SSL',
+            )
+        ));
+        $encryptionSelect->setLabel('Encryption');
+        
+        $this->add($authSelect)
+             ->add($encryptionSelect);
+        
         $button = new Form\Element\Button('save');
         $button->setAttribute('type', 'submit')
                ->setLabel('Save');
@@ -82,7 +102,7 @@ class SmtpSettings extends Form\Form
                     array(
                         'name' => 'notempty',
                         'options' => array(
-                            'message' => 'You must provide the username.',
+                            'message' => 'Username can\'t be empty.',
                         ),
                     ),
                 ),
@@ -91,14 +111,6 @@ class SmtpSettings extends Form\Form
                 'filters' => array(
                     array(
                         'name' => 'stringtrim'
-                    )
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'notempty',
-                        'options' => array(
-                            'message' => 'You must provide the password.',
-                        ),
                     )
                 ),
             )))->add($factory->createInput(array(
@@ -110,6 +122,13 @@ class SmtpSettings extends Form\Form
                 ),
                 'validators' => array(
                     array(
+                        'name' => 'notempty',
+                        'options' => array(
+                            'message' => 'Host can\'t be empty.',
+                        ),
+                        'break_chain_on_failure' => true,
+                    ),
+                    array(
                         'name' => 'hostname',
                         'options' => array(
                             'allow' => Validator\Hostname::ALLOW_ALL,
@@ -117,6 +136,48 @@ class SmtpSettings extends Form\Form
                         ),
                     ),
                 ),
+            )))->add($factory->createInput(array(
+                'name' => 'port',
+                'filters' => array(
+                    array(
+                        'name' => 'stringtrim'
+                    )
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'notempty',
+                        'options' => array(
+                            'message' => 'Port can\'t be empty.',
+                        ),
+                        'break_chain_on_failure' => true,
+                    ),
+                    array(
+                        'name' => 'digits',
+                        'options' => array(
+                            'message' => 'Provide a valid port.',
+                        )
+                    )
+                )
+            )))->add($factory->createInput(array(
+                'name' => 'authentication',
+                'validators' => array(
+                    array(
+                        'name' => 'notempty',
+                        'options' => array(
+                            'message' => 'Select authentication method.',
+                        ),
+                    ),
+                )
+            )))->add($factory->createInput(array(
+                'name' => 'encryption',
+                'validators' => array(
+                    array(
+                        'name' => 'notempty',
+                        'options' => array(
+                            'message' => 'Select encryption to use during authentication.',
+                        ),
+                    ),
+                )
             )));
             
             $this->filter = $filter;

@@ -46,6 +46,12 @@ class IndexController extends AbstractActionController
     public function settingsAction()
     {
         $form = $this->getTransportForm();
+        $settings = $this->getService()->getSettings();
+        
+        if ($settings) {
+            $form->get('transport')->setValue($settings->getTransport());
+        }
+        
         $form->setAttribute('action', $this->url()->fromRoute('bzl-mail/process-settings'));
         $form->setAttribute('method', 'post');
         return array(
@@ -75,11 +81,12 @@ class IndexController extends AbstractActionController
                     $option = $transportOptions[$transport];
                     /* @var $option \BzlMail\Transport\Option\AbstractOption */
                     if ($option->getForm()) {
+                        $this->flashMessenger()->addInfoMessage('Almost there. Please provide the information required to complete this set-up.');
                         return $this->prg($this->url()->fromRoute('bzl-mail/transport-settings'), true);
                     } else {
                         $settings = new \BzlMail\Settings\Settings($transport, null);
                         $service->saveSettings($settings);
-                        $this->flashMessenger()->addSuccessMessage('Settings saved.');
+                        $this->flashMessenger()->addSuccessMessage('Settings saved. No further set-up required.');
                     }
                 }        
             }
@@ -98,14 +105,27 @@ class IndexController extends AbstractActionController
         $model = new \Zend\View\Model\ViewModel();
         
         if($data){
+            
             $transport = $data['transport'];
             
             $service = $this->getService();
+            $settings = $service->getSettings();
+            
             $transportOptions = $service->getTransportOptions();
             
             $option = $transportOptions[$transport];
             
             /* @var $option \BzlMail\Transport\Option\AbstractOption */
+            
+            
+            if (
+                count($data) == 1
+                && !isset($data['__form_validation_failure__'])
+                && $settings
+                && $settings->getTransport() == $transport
+            ) {
+                $option->setSettings($settings->getSettings());
+            }
             
             $model->option = $option;
             
@@ -140,17 +160,19 @@ class IndexController extends AbstractActionController
             $option->getForm()->setData($data);
             
             if($option->getForm()->isValid()){
-                
+                                
                 $settings = new \BzlMail\Settings\Settings($data['transport'], $option->getSettings());
                 $service->saveSettings($settings);
+                $this->flashMessenger()->addSuccessMessage('Settings saved.');
                 return $this->redirect()->toRoute('bzl-mail/settings');
                 
             }else{
                 foreach($option->getForm()->getInputFilter()->getInvalidInput() as $input){
                     foreach($input->getMessages() as $message){
+                        $this->flashMessenger()->addErrorMessage($message);
                     }
                 }
-                exit;
+                $this->getRequest()->getPost()->set('__form_validation_failure__', 1);
                 return $this->prg($this->url()->fromRoute('bzl-mail/transport-settings'), true);
             }
         }
