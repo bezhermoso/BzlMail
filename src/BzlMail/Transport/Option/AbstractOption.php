@@ -31,13 +31,21 @@ abstract class AbstractOption
     
     public function getSettings()
     {
-        if($this->getForm())
-            return $this->getForm()->getData();
+        if($this->getForm()){
+            try{
+                $data = $this->getForm()->getData();
+                return $data;
+            }catch(\Zend\Form\Exception\DomainException $e){
+                $this->getForm()->isValid();
+                return $this->getSettings();
+            }
+        }
     }
     
     public function setSettings($settings)
     {
-        if($this->getForm())
+        if($this->getForm()){
             return $this->getForm()->setData($settings);
+        }
     }
 }

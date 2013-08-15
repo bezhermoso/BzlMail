@@ -68,6 +68,7 @@ class SmtpSettings extends Form\Form
         
         $encryptionSelect = new Form\Element\Select('encryption', array(
             'value_options' => array(
+                '' => 'No encryption',
                 'tls' => 'TLS',
                 'ssl' => 'SSL',
             )
@@ -170,14 +171,7 @@ class SmtpSettings extends Form\Form
                 )
             )))->add($factory->createInput(array(
                 'name' => 'encryption',
-                'validators' => array(
-                    array(
-                        'name' => 'notempty',
-                        'options' => array(
-                            'message' => 'Select encryption to use during authentication.',
-                        ),
-                    ),
-                )
+                'required' => false,
             )));
             
             $this->filter = $filter;

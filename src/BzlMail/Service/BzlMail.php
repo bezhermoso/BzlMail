@@ -63,7 +63,7 @@ class BzlMail
     /**
      * 
      * @param type $fallbackToDefault
-     * @return \Zend\Mail\Transport\TransportInterface
+     * @return Transport\Option\AbstractOption
      */
     public function getChosenOption()
     {

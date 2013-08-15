@@ -45,8 +45,11 @@ class IndexController extends AbstractActionController
     
     public function settingsAction()
     {
+        $service = $this->getService();
         $form = $this->getTransportForm();
-        $settings = $this->getService()->getSettings();
+        $settings = $service->getSettings();
+        
+        $option = $service->getChosenOption();
         
         if ($settings) {
             $form->get('transport')->setValue($settings->getTransport());
@@ -56,8 +59,8 @@ class IndexController extends AbstractActionController
         $form->setAttribute('method', 'post');
         return array(
             'form' => $form,
-            'options' => $this->getService()->getTransportOptions(),
-            'settings' => $this->getService()->getSettings(),
+            'options' => $service->getTransportOptions(),
+            'settings' => $service->getSettings(),
         );
     }
     
@@ -176,7 +179,6 @@ class IndexController extends AbstractActionController
                 return $this->prg($this->url()->fromRoute('bzl-mail/transport-settings'), true);
             }
         }
-        
         
         return $this->getResponse();
     }
