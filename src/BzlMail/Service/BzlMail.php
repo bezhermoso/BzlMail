@@ -53,19 +53,11 @@ class BzlMail
     public function getTransportOptions()
     {
         if($this->transportOptions === null){
-            $this->transportOptions = new Transport\TransportOptions($this->config->transport_options->toArray(), $this->getServiceLocator());
+            $this->transportOptions = new Transport\TransportOptions(
+                    $this->config->transport_options->toArray(), 
+                    $this->getServiceLocator());
         }
         return $this->transportOptions;
-    }
-    
-    public function getDefaultTransportOption()
-    {
-        $options = $this->getTransportOptions();
-        if(isset($this->config->default_transport) && isset($options[$this->config->default_transport])){
-            return $options[$this->config->default_transport];
-        }else{
-            throw new \RuntimeException('No default transport defined or registered.');
-        }
     }
     
     /**
@@ -73,22 +65,22 @@ class BzlMail
      * @param type $fallbackToDefault
      * @return \Zend\Mail\Transport\TransportInterface
      */
-    public function getChosenTransportOption($fallbackToDefault = true)
+    public function getChosenOption()
     {
         $options = $this->getTransportOptions();
         $storage = $this->getStorage();
         
         $settings = $storage->get();
         
-        if($settings && isset($options[$settings->getTransport()])){
+        if ($settings && isset($options[$settings->getTransport()])) {
             
             /* @var $option Transport\Option\AbstractOption */
             $option = $options[$settings->getTransport()];
             $option->setSettings($settings->getSettings());
             return $option;
             
-        }else if($fallbackToDefault === true){
-            return $this->getDefaultTransportOption();
+        } else {
+            throw new \Exception('No transport option set yet.');
         }
         
     }
@@ -104,7 +96,7 @@ class BzlMail
      */
     public function getStorage()
     {
-        if($this->storage === null){
+        if ($this->storage === null) {
             $storage = new Settings\Storage\Storage(new Settings\Storage\Adapter\JsonConfig('data/BzlMail/settings.json'));
             $this->storage = $storage;
         }

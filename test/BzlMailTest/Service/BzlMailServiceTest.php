@@ -31,7 +31,6 @@ class BzlMailServiceTest extends \PHPUnit_Framework_TestCase
     public function testBundledTransportOptionsExist()
     {
         $config = new Config\Config(array(
-            'default_transport' => 'sendmail',
             'transport_options' => array(
                 'sendmail' => 'BzlMail\Transport\Option\Sendmail',
                 'smtp' => 'BzlMail\Transport\Option\Smtp',
@@ -57,28 +56,9 @@ class BzlMailServiceTest extends \PHPUnit_Framework_TestCase
         }
     }
     
-    public function testDefaultTransportOptionCanBeResolved()
-    {
-        $config = new Config\Config(array(
-            'default_transport' => 'sendmail',
-            'transport_options' => array(
-                'sendmail' => 'BzlMail\Transport\Option\Sendmail',
-                'smtp' => 'BzlMail\Transport\Option\Smtp',
-            )
-        ));
-        
-        $service = new Service\BzlMail($config, $this->serviceManager);
-        
-        $defaultOption = $service->getDefaultTransportOption();
-        
-        $this->assertInstanceOf($config->transport_options->sendmail, 
-                                $defaultOption);
-    }
-    
     public function testJsonConfigStorageAdapter()
     {
         $config = new Config\Config(array(
-            'default_transport' => 'sendmail',
             'transport_options' => array(
                 'sendmail' => 'BzlMail\Transport\Option\Sendmail',
                 'smtp' => 'BzlMail\Transport\Option\Smtp',
@@ -89,13 +69,23 @@ class BzlMailServiceTest extends \PHPUnit_Framework_TestCase
             'username' => 'bezhermoso',
             'password' => 'password'
         ));
-        $service->setStorage(new Settings\Storage\Storage(new Settings\Storage\Adapter\JsonConfig('settings.json')));
+        $storage = new Settings\Storage\Storage(new Settings\Storage\Adapter\JsonConfig('settings.json'));
+        $service->setStorage($storage);
         $service->saveSettings($settings);
         
         $this->assertFileExists('settings.json');
         
-        $option = $service->getChosenTransportOption(false);
+        $option = $service->getChosenOption();
         $this->assertInstanceOf($config->transport_options->smtp, $option);
         $this->assertInstanceOf('Zend\Mail\Transport\Smtp', $option->getTransport());
+        
+        
+        $secondService = new Service\BzlMail($config, $this->serviceManager);
+        $secondService->setStorage($storage);
+        
+        $secondOption = $service->getChosenOption();
+        $this->assertInstanceOf($config->transport_options->smtp, $secondOption);
+        $this->assertInstanceOf('Zend\Mail\Transport\Smtp', $secondOption->getTransport());
+        
     }
 }
