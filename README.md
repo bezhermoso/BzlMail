@@ -11,7 +11,7 @@ Email set-up and sending utlities module for Zend Framework 2
 
 Install via Composer 
 ```sh
-composer require bez\bzl-mail:dev-master
+composer require bez/bzl-mail:dev-master
 ```
 
 Create the directory, `data/BzlMail`, and make sure it is writeable. A JSON file will be saved in this location containing the configuration data. This storage mechanism can be overridden by implementing `BzlMail\Settings\Storage\Adapter\AdapterInterface` (more info will follow)
