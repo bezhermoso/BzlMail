@@ -1,20 +1,24 @@
 <?php
 
 return array(
-    
+    /* Configuration options for BzlMail. */
     'bzl-mail' => array(
         'transport_options' => array(
+            /* Transport options available for selection. */
             'sendmail' => 'BzlMail\Transport\Option\Sendmail',
             'smtp' => 'BzlMail\Transport\Option\Smtp',
+            'gmailSmtp' => 'BzlMail\Transport\Option\GmailSmtp',
         )
     ),
-    
     'service_manager' => array(
         'factories' => array(
             'BzlMail\Service\BzlMail' => 'BzlMail\Service\BzlMailFactory',
             'BzlMail\Config' => 'BzlMail\Service\ConfigFactory',
             'bzlmail.transport' => 'BzlMail\Service\TransportFactory',
         ),
+        'shared' => array(
+            'bzlmail.transport' => false,
+        )
     ),
     'controllers' => array(
         'invokables' => array(

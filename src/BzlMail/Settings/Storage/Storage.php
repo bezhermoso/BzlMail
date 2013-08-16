@@ -39,7 +39,11 @@ class Storage
      */
     public function save(Settings $settings)
     {
-        $this->adapter->saveSettings($settings);
+        try{
+            $this->adapter->saveSettings($settings);
+        }catch(\Exception $e){
+            throw new Exception\RuntimeException($e->getMessage(), $e->getCode(), $e);
+        }
     }
     
     /**

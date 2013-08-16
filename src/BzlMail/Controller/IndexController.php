@@ -166,9 +166,13 @@ class IndexController extends AbstractActionController
                 
                 if($data['action'] == 'save'){
                     $settings = new \BzlMail\Settings\Settings($data['transport'], $option->getSettings());
-                    $service->saveSettings($settings);
-                    $this->flashMessenger()->addSuccessMessage('Settings saved.');
-                    return $this->redirect()->toRoute('bzl-mail/settings');
+                    try{
+                        $service->saveSettings($settings);
+                        $this->flashMessenger()->addSuccessMessage('Settings saved.');
+                        return $this->redirect()->toRoute('bzl-mail/settings');
+                    }catch(\BzlMail\Settings\Storage\Exception\RuntimeException $e){
+                        $this->flashMessenger()->addErrorMessage('There was an error encountered when saving your settings was attempted. Please check with the administrator.');
+                    }
                 } elseif ($data['action'] == 'test') {
                     $emailValidator = new \Zend\Validator\EmailAddress();
                     if($emailValidator->isValid($data['send_test_to'])){
