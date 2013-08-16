@@ -16,9 +16,9 @@ Available transports:
 + Sendmail
 + SMTP
 
-###Retrieving the mail transport object
+###Retrieving the Mail Transport Object
 
-You can retrieve a pre-configured transport from the service locator, like so, `$serviceLocator->get('bzlmail.transport')`.
+You can retrieve the configured transport from the service locator, like so, `$serviceLocator->get('bzlmail.transport')`. This will return a transport object that is configured according to the data provided in the settings page.
 
 Alternatively, you can use the `bzlTransport` controller plugin.
 
