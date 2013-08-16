@@ -3,7 +3,7 @@ BzlMail
 
 Email set-up and sending utlities module for Zend Framework 2
 
-* Transport settings via forms [DEVELOPMENT ONGOING]
+* Transport settings via forms [WORKING]
 * Email sending facade (easier HTML email composition, adding attachments, etc) [PENDING]
 * Email queueing [PENDING]
 
@@ -18,18 +18,22 @@ Available transports:
 
 ###Retrieving the Mail Transport Object
 
-You can retrieve the configured transport from the service locator, like so, `$serviceLocator->get('bzlmail.transport')`. This will return a transport object that is configured according to the data provided in the settings page.
+You can retrieve the configured transport from the service locator, like so, `$serviceLocator->get('bzlmail.transport')`. This will return a transport object that is configured according to the preferred configurations.
 
 Alternatively, you can use the `bzlTransport` controller plugin.
 
-    class SomeController
+```php
+<?php
+    
+class SomeController
+{
+    public function someAction()
     {
-        public function someAction()
-        {
-            $message = new \Zend\Mail\Message();
-      
-            ...
-      
-            $this->bzlTransport()->send($message);
-        }
+        $message = new \Zend\Mail\Message();
+  
+        /* ... */
+  
+        $this->bzlTransport()->send($message);
     }
+}
+```
