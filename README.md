@@ -15,6 +15,12 @@ Available transports:
 
 + Sendmail
 + SMTP
++ Gmail (pre-configured SMTP for convenience)
+
+Upcoming transports:
+
++ Mandrill (pre-configured SMTP)
++ SendGrid (pre-configured SMTP)
 
 ###Retrieving the Mail Transport Object
 
@@ -37,3 +43,7 @@ class SomeController
     }
 }
 ```
+
+##Installation
+
+Create the directory, `data/BzlMail`, and make sure it is writeable. A JSON file will be saved in this location containing the configuration data. This storage mechanism can be overridden by implementing `BzlMail\Settings\Storage\Adapter\AdapterInterface` (more info will follow)
