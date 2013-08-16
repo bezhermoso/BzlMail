@@ -13,6 +13,7 @@ return array(
         'factories' => array(
             'BzlMail\Service\BzlMail' => 'BzlMail\Service\BzlMailFactory',
             'BzlMail\Config' => 'BzlMail\Service\ConfigFactory',
+            'bzlmail.transport' => 'BzlMail\Service\TransportFactory',
         ),
     ),
     'controllers' => array(
