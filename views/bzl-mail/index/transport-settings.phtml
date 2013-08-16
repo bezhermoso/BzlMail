@@ -1,4 +1,9 @@
 <div class="container">
+    <?php
+        echo $this->flashMessenger()->render('error', array('alert alert-error unstyled'));
+        echo $this->flashMessenger()->render('success', array('alert alert-success unstyled'));
+        echo $this->flashMessenger()->render('info', array('alert alert-info unstyled'));
+    ?>
     <div class="row">
         <div class="span12">
             <legend>
@@ -18,7 +23,21 @@
                     ?>
                 </dd>
                 <?php endforeach; ?>
+                <dt>
+                    &nbsp;
+                </dt>
+                <dd>
+                    <button type="submit" name="action" value="save"><strong>Save</strong></button>
+                </dd>
+                <dt>
+                    &nbsp;
+                </dt>
+                <dd>
+                    <input type="email" name="send_test_to" placeholder="Email address." />
+                    <button type="submit" name="action" value="test">Send Test Email</button>
+                </dd>
             </dl>
+            
             <?php echo $this->form()->closeTag(); ?>
         </div>
     </div>

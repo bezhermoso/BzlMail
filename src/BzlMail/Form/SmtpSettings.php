@@ -78,11 +78,6 @@ class SmtpSettings extends Form\Form
         $this->add($authSelect)
              ->add($encryptionSelect);
         
-        $button = new Form\Element\Button('save');
-        $button->setAttribute('type', 'submit')
-               ->setLabel('Save');
-        
-        $this->add($button);
     }
     
     public function getInputFilter()

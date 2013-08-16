@@ -2,6 +2,11 @@
 
 ?>
 <div class="container">
+    <?php
+        echo $this->flashMessenger()->render('error', array('alert alert-error unstyled'));
+        echo $this->flashMessenger()->render('success', array('alert alert-success unstyled'));
+        echo $this->flashMessenger()->render('info', array('alert alert-info unstyled'));
+    ?>
     <div class="row">
         <div class="span12">
             <legend>
@@ -20,14 +25,22 @@
                         value="<?php echo $value; ?>" 
                         <?php echo $value == $form->get('transport')->getValue() ? 'checked' : ''; ?>
                     />
+                    <?php
+                        
+                    ?>
                 </dt>
                 <dd>
-                    <h5>
-                        <?php echo $label; ?>
-                    </h5>
+                   <strong><?=$label;?></strong>
                 </dd>
                 <?php endforeach; ?>
                 <dt>
+                    &nbsp;
+                </dt>
+                <dd>
+                    &nbsp;
+                </dd>
+                <dt>
+                &nbsp;
                 </dt>
                 <dd>
                     <button class="" type="submit">Continue &rightarrow;</button>

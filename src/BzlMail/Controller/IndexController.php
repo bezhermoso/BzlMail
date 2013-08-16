@@ -89,13 +89,14 @@ class IndexController extends AbstractActionController
                         $service->saveSettings($settings);
                         $this->flashMessenger()->addSuccessMessage('Settings saved. No further set-up required.');
                     }
-                }        
+                }     
             }
-        }else{
+        } else {
             foreach ($form->getInputFilter()->getInvalidInput() as $input) {
                 $this->flashMessenger()->addErrorMessage($input->getErrorMessage());
             }
         }
+        
         return $this->redirect()->toRoute('bzl-mail/settings');            
     }
     
@@ -105,7 +106,7 @@ class IndexController extends AbstractActionController
         
         $model = new \Zend\View\Model\ViewModel();
         
-        if($data){
+        if ($data) {
             
             $transport = $data['transport'];
             
@@ -117,7 +118,6 @@ class IndexController extends AbstractActionController
             $option = $transportOptions[$transport];
             
             /* @var $option \BzlMail\Transport\Option\AbstractOption */
-            
             
             if (
                 count($data) == 1
@@ -136,10 +136,12 @@ class IndexController extends AbstractActionController
                     'type' => 'hidden',
                 )
             ));
+            
             $option->getForm()->setData($data);
+            
             $option->getForm()->setAttribute('action', $this->url()->fromRoute('bzl-mail/process-transport-settings'));
             
-        }else{
+        } else {
             return $this->redirect()->toRoute('bzl-mail/settings');
         }
         
@@ -161,11 +163,33 @@ class IndexController extends AbstractActionController
             $option->getForm()->setData($data);
             
             if($option->getForm()->isValid()){
-                                
-                $settings = new \BzlMail\Settings\Settings($data['transport'], $option->getSettings());
-                $service->saveSettings($settings);
-                $this->flashMessenger()->addSuccessMessage('Settings saved.');
-                return $this->redirect()->toRoute('bzl-mail/settings');
+                
+                if($data['action'] == 'save'){
+                    $settings = new \BzlMail\Settings\Settings($data['transport'], $option->getSettings());
+                    $service->saveSettings($settings);
+                    $this->flashMessenger()->addSuccessMessage('Settings saved.');
+                    return $this->redirect()->toRoute('bzl-mail/settings');
+                } elseif ($data['action'] == 'test') {
+                    $emailValidator = new \Zend\Validator\EmailAddress();
+                    if($emailValidator->isValid($data['send_test_to'])){
+                        $transport = $option->getTransport();
+                        $message = new \Zend\Mail\Message();
+                        $message->setTo($data['send_test_to'])
+                                ->setSubject('BzlMail - Testing ' . $option->getName() . ' Settings')
+                                ->setFrom('noreply@bez.im', 'BzlMail')
+                                ->setBody('If you are seeing this, congratulations!');
+                        try{
+                            $transport->send($message);
+                            $this->flashMessenger()->addSuccessMessage('Test email sent to ' . $data['send_test_to']);
+                        }catch(\Exception $e){
+                            $this->flashMessenger()->addErrorMessage($e->getMessage());
+                        }
+                    }else{
+                        foreach($emailValidator->getMessages() as $message){
+                            $this->flashMessenger()->addErrorMessage($message);
+                        }
+                    }
+                }
                 
             }else{
                 foreach($option->getForm()->getInputFilter()->getInvalidInput() as $input){
@@ -174,9 +198,9 @@ class IndexController extends AbstractActionController
                     }
                 }
                 $this->getRequest()->getPost()->set('__form_validation_failure__', 1);
-                return $this->prg($this->url()->fromRoute('bzl-mail/transport-settings'), true);
             }
         }
+        return $this->prg($this->url()->fromRoute('bzl-mail/transport-settings'), true);
         
         return $this->getResponse();
     }
