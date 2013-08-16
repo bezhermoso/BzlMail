@@ -3,7 +3,6 @@
 return array(
     
     'bzl-mail' => array(
-        'default_transport' => 'sendmail',
         'transport_options' => array(
             'sendmail' => 'BzlMail\Transport\Option\Sendmail',
             'smtp' => 'BzlMail\Transport\Option\Smtp',

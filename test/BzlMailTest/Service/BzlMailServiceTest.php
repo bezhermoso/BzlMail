@@ -67,7 +67,10 @@ class BzlMailServiceTest extends \PHPUnit_Framework_TestCase
         $service = new Service\BzlMail($config, $this->serviceManager);
         $settings = new Settings\Settings('smtp', array(
             'username' => 'bezhermoso',
-            'password' => 'password'
+            'password' => 'password',
+            'port' => '25',
+            'host' => 'localhost',
+            'authentication' => 'plain',
         ));
         $storage = new Settings\Storage\Storage(new Settings\Storage\Adapter\JsonConfig('settings.json'));
         $service->setStorage($storage);

@@ -1,1 +1,1 @@
-{"transport":"smtp","settings":{"username":"bezhermoso","password":"password"}}
+{"transport":"smtp","settings":{"username":"bezhermoso","password":"password","port":"25","host":"localhost","authentication":"plain"}}
