@@ -3,11 +3,11 @@ BzlMail
 
 Email set-up and sending utlities module for Zend Framework 2
 
-* Transport settings via forms [WORKING]
-* Email sending facade (easier HTML email composition, adding attachments, etc) [PENDING]
-* Email queueing [PENDING]
+* Mail transport selection and configuration via forms **[WORKING]**
+* Facade for composing and transmitting emails (easier HTML email composition, adding attachments, etc) [PENDING]
+* Email scheduling & queueing [PENDING]
 
-###Mail Transport Selection & Configuration
+##Mail Transport Selection & Configuration
 
 Choosing and configuring the preferred transport to use in your application is easy -- once installed, simply head to http://yourappurl.com/email/settings
 
