@@ -7,6 +7,15 @@ Email set-up and sending utlities module for Zend Framework 2
 * Facade for composing and transmitting emails (easier HTML email composition, adding attachments, etc) [PENDING]
 * Email scheduling & queueing [PENDING]
 
+##Installation
+
+Install via Composer 
+```sh
+composer require bez\bzl-mail:dev-master
+```
+
+Create the directory, `data/BzlMail`, and make sure it is writeable. A JSON file will be saved in this location containing the configuration data. This storage mechanism can be overridden by implementing `BzlMail\Settings\Storage\Adapter\AdapterInterface` (more info will follow)
+
 ##Mail Transport Selection & Configuration
 
 Choosing and configuring the preferred transport to use in your application is easy -- once installed, simply head to http://yourappurl.com/email/settings
@@ -45,7 +54,3 @@ class SomeController
     }
 }
 ```
-
-##Installation
-
-Create the directory, `data/BzlMail`, and make sure it is writeable. A JSON file will be saved in this location containing the configuration data. This storage mechanism can be overridden by implementing `BzlMail\Settings\Storage\Adapter\AdapterInterface` (more info will follow)
