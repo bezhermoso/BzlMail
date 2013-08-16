@@ -19,8 +19,10 @@ Available transports:
 
 Upcoming transports:
 
-+ Mandrill (pre-configured SMTP)
-+ SendGrid (pre-configured SMTP)
++ Mandrill SMTP
++ SendGrid SMTP
++ Mandrill API
++ Sendgrid API
 
 ###Retrieving the Mail Transport Object
 
