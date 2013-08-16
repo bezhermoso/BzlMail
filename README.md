@@ -13,6 +13,7 @@ Install via Composer
 ```sh
 composer require bez/bzl-mail:dev-master
 ```
+Add `"BzlMail"` to the list of modules to load in `config/application.config.php`
 
 Create the directory, `data/BzlMail`, and make sure it is writeable. A JSON file will be saved in this location containing the configuration data. This storage mechanism can be overridden by implementing `BzlMail\Settings\Storage\Adapter\AdapterInterface` (more info will follow)
 
