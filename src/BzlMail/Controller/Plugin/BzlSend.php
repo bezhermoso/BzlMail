@@ -231,9 +231,9 @@ class BzlSend extends AbstractPlugin implements ServiceManager\ServiceLocatorAwa
                 return $this->emailTemplate;
             } elseif(is_string($this->emailTemplate)) {
                 $this->emailTemplate = new ViewModel($this->emailTemplate);
-            } else {
-                throw new \RuntimeException('Cannot resolve template "' . $this->emailTemplate . '".');
             }
+            return $this->emailTemplate;
+            
         } else {
             return false;
         }
