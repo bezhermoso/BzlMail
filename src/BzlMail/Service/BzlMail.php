@@ -82,6 +82,31 @@ class BzlMail
         } else {
             throw new \Exception('No transport option set yet.');
         }
+    }
+    
+    public function setChosenOption(Transport\Option\AbstractOption $option)
+    {
+        $transportKey = null;
+        
+        foreach ($this->getTransportOptions() as $key => $transportOption) {
+            if ($option instanceof $transportOption) {
+                $transportKey = $key;
+                break;
+            }
+        }
+        
+        if ($transportKey === null) {
+           throw new \RuntimeException(
+                   sprintf(
+                           "Cannot save option %s. It is not found within BzlMail\Transport\TransportOptions", 
+                           get_class($option)
+                    ));
+        } else {
+            
+            $settings = new Settings\Settings($transportKey, $option->getSettings());
+            $this->saveSettings($settings);
+            
+        }
         
     }
     
