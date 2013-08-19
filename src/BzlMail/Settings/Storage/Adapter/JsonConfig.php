@@ -21,10 +21,15 @@ class JsonConfig implements AdapterInterface
     protected $reader;
     protected $destination;
     
+    static $defaultDestination = 'data/BzlMail/settings.json';
+    
     public function __construct($destination = null)
     {
-        if($destination !== null)
-            $this->setDestination ($destination);
+        if($destination === null){
+            $destination = static::$defaultDestination;
+        }
+        
+        $this->setDestination ($destination);
     }
     
     public function setDestination($destination)

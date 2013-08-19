@@ -8,7 +8,8 @@ return array(
             'sendmail' => 'BzlMail\Transport\Option\Sendmail',
             'smtp' => 'BzlMail\Transport\Option\Smtp',
             'gmailSmtp' => 'BzlMail\Transport\Option\GmailSmtp',
-        )
+        ),
+        'settings_storage_adapter' => 'BzlMail\Settings\Storage\Adapter\JsonConfig',
     ),
     'service_manager' => array(
         'factories' => array(

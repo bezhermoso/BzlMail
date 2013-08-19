@@ -89,12 +89,11 @@ class BzlMail
         $transportKey = null;
         
         foreach ($this->getTransportOptions() as $key => $transportOption) {
-            if ($option instanceof $transportOption) {
+            if (get_class($option) === get_class($transportOption)) {
                 $transportKey = $key;
                 break;
             }
         }
-        
         if ($transportKey === null) {
            throw new \RuntimeException(
                    sprintf(
@@ -122,7 +121,21 @@ class BzlMail
     public function getStorage()
     {
         if ($this->storage === null) {
-            $storage = new Settings\Storage\Storage(new Settings\Storage\Adapter\JsonConfig('data/BzlMail/settings.json'));
+            $storage = new Settings\Storage\Storage();
+            
+            $adapterName = $this->config->settings_storage_adapter;
+            
+            if ($adapterName instanceof Settings\Storage\Adapter\AdapterInterface) {
+                $storageAdapter = $adapterName;
+            } elseif (is_string($adapterName) && $this->getServiceLocator()->has($adapterName)){
+                $storageAdapter = $this->getServiceLocator()->get($adapterName);
+            } elseif (is_string($adapterName) && class_exists($adapterName)) {
+                $storageAdapter = new $adapterName();
+            } else {
+                throw new \RuntimeException('Cannot instantiate the appropriate setting storage adapter.');
+            }
+            
+            $storage->setAdapter($storageAdapter);
             $this->storage = $storage;
         }
         return $this->storage;
