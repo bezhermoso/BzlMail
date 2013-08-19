@@ -48,18 +48,26 @@ class BzlSend extends AbstractPlugin implements ServiceManager\ServiceLocatorAwa
         return $this->message;
     }
     
-    public function setContent($content, $mimeType = 'text/plain')
+    public function setContent($content, $mimeTypeOrVars = null)
     {
-        $this->content = $content;
         
         if (is_string($content)) {
-            $this->contentMimeType = $mimeType;
+            
+            if ($mimeTypeOrVars == null  || is_array($mimeTypeOrVars)) {
+                $this->content = new ViewModel($mimeTypeOrVars);
+                $this->content->setTemplate($content);
+            } elseif(is_string($mimeTypeOrVars)) {
+                $this->contentMimeType = $mimeTypeOrVars;
+                $this->content = $content;
+            }
+        } else {
+            $this->content = $content;
         }
         
         return $this;
     }
     
-    public function addAttachment($attachment, $filename = null, $mimeType = null, $isRaw = false)
+    public function addAttachment($attachment, $mimeType = null, $filename = null, $isRaw = false)
     {
         if ($attachment instanceof Mime\Part) {
             
@@ -74,7 +82,7 @@ class BzlSend extends AbstractPlugin implements ServiceManager\ServiceLocatorAwa
                     throw new \DomainException('Mime-type must be provided when passing in raw content.');
                 
                 if ($filename === null)
-                    throw new \DomainException('Filename must be provided when passing in raw content');
+                    throw new \DomainException('Filename must be provided when passing in raw content.');
                 
                 $part = new Mime\Part($attachment);
                 $part->type = $mimeType;
@@ -87,16 +95,20 @@ class BzlSend extends AbstractPlugin implements ServiceManager\ServiceLocatorAwa
                     
                     $part = new Mime\Part(file_get_contents($attachment));
                     
-                    if($mimeType != null){
+                    if ($mimeType != null) {
                         $part->type = $mimeType;
-                    }else{
+                    } elseif(extension_loaded('finfo')) {
                         $finfo = finfo_open(FILEINFO_MIME_TYPE);
                         $derivedMime = finfo_file($finfo, $attachment);
                         $part->type = $derivedMime;
+                    } else {
+                        throw new \RuntimeException(
+                                'Cannot detect mime-type. Either provide mime-type or enable "fileinfo" extension in PHP.'
+                                );
                     }
                     
                     $part->disposition = Mime\Mime::DISPOSITION_ATTACHMENT;
-                    $part->filename = $filename?: basename($filename);
+                    $part->filename = $filename ?: basename($filename);
                     $this->attachments[] = $part;
                 
             } else {
@@ -127,7 +139,7 @@ class BzlSend extends AbstractPlugin implements ServiceManager\ServiceLocatorAwa
             
         }
         
-        $this->prepareContent();
+        $this->prepareMessage();
         $message = $this->getMessage();
         
         $this->getTransport()->send($message);
@@ -137,7 +149,7 @@ class BzlSend extends AbstractPlugin implements ServiceManager\ServiceLocatorAwa
         
     }
     
-    public function prepareContent()
+    public function prepareMessage()
     {
         if ($this->content instanceof ViewModel) {
             

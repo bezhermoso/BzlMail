@@ -1,0 +1,26 @@
+Date: Mon, 19 Aug 2013 17:15:55 +0000
+Subject: Test
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+ boundary="=_062627616cccbdfb9c04b9a5bad2a0e2"
+
+This is a message in Mime Format.  If you see this, your mail reader does not support this format.
+
+--=_062627616cccbdfb9c04b9a5bad2a0e2
+Content-Type: test.txt
+Content-Transfer-Encoding: 8bit
+Content-Disposition: attachment; filename="text/plain"
+
+test
+--=_062627616cccbdfb9c04b9a5bad2a0e2
+Content-Type: application/json
+Content-Transfer-Encoding: 8bit
+Content-Disposition: attachment
+
+{"transport":"smtp","settings":{"username":"bezhermoso","password":"password","port":"25","host":"localhost","authentication":"plain"}}
+--=_062627616cccbdfb9c04b9a5bad2a0e2
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+
+content
+--=_062627616cccbdfb9c04b9a5bad2a0e2--
