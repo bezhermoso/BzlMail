@@ -86,8 +86,6 @@ class IndexController extends AbstractActionController
                         return $this->prg($this->url()->fromRoute('bzl-mail/transport-settings'), true);
                     } else {
                         $service->setChosenOption($option);
-                        //$settings = new \BzlMail\Settings\Settings($transport, null);
-                        //$service->saveSettings($settings);
                         $this->flashMessenger()->addSuccessMessage('Settings saved. No further set-up required.');
                     }
                 }     
@@ -166,10 +164,8 @@ class IndexController extends AbstractActionController
             if($option->getForm()->isValid()){
                 
                 if($data['action'] == 'save'){
-                    $settings = new \BzlMail\Settings\Settings($data['transport'], $option->getSettings());
                     try{
                         $service->setChosenOption($option);
-                        //$service->saveSettings($settings);
                         $this->flashMessenger()->addSuccessMessage('Settings saved.');
                         return $this->redirect()->toRoute('bzl-mail/settings');
                     }catch(\BzlMail\Settings\Storage\Exception\RuntimeException $e){
