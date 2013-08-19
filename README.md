@@ -4,7 +4,7 @@ BzlMail
 Email set-up and sending utlities module for Zend Framework 2
 
 * Mail transport selection and configuration via forms **[WORKING]**
-* Facade for composing and transmitting emails (easier HTML email composition, adding attachments, etc) [PENDING]
+* Facade for composing and transmitting emails (easier HTML email composition, adding attachments, etc) [DEVELOPMENT ONGOING]
 * Email scheduling & queueing [PENDING]
 
 ##Installation
