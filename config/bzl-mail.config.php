@@ -28,6 +28,7 @@ return array(
     'controller_plugins' => array(
         'invokables' => array(
             'bzlTransport' => 'BzlMail\Controller\Plugin\BzlTransport',
+            'bzlSend' => 'BzlMail\Controller\Plugin\BzlSend',
         )
     ),
     'router' => array(
