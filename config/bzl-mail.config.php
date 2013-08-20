@@ -19,6 +19,9 @@ return array(
         ),
         'shared' => array(
             'bzlmail.transport' => false,
+        ),
+        'invokables' => array(
+            'bzlmail.composer' => 'BzlMail\Composition\Facade',
         )
     ),
     'controllers' => array(

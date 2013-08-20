@@ -33,7 +33,7 @@ class BzlSendTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->serviceManager = Bootstrap::getServiceManager();
-        $this->plugin = $this->serviceManager->get('ControllerPluginManager')->get('BzlSend');
+        $this->plugin = $this->serviceManager->get('bzlmail.composer');
         
         $fileOptions = new Mail\Transport\FileOptions(array(
             'path' => 'mailbox'
@@ -45,13 +45,9 @@ class BzlSendTest extends \PHPUnit_Framework_TestCase
     }
     
     public function testComposition()
-    {
-        $this->assertInstanceOf('BzlMail\Controller\Plugin\BzlSend', $this->plugin);
-        
-        $this->plugin->addAttachment('test', 'test.txt', 'text/plain', true)
-                     ->addAttachment('settings.json', 'application/json')
-                     ->setSubject('Test')
-                     ->setContent('content', 'text/plain')
+    {   
+        $this->plugin->setSubject('Subject here.')
+                     ->setContent('Content here.', 'text/plain')
                      ->send();
     }
 }
