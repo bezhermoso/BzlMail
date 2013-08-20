@@ -21,6 +21,20 @@ class BzlSend extends AbstractPlugin implements ServiceManager\ServiceLocatorAwa
         return $this->getCompositionFacade();
     }
     
+    public function __call($name, $arguments)
+    {
+        $facade = $this->getCompositionFacade();
+        
+        if (method_exists($facade, $name)) {
+            if (preg_match('/^get/', $name)) {
+                return call_user_func_array(array($facade, $name), $arguments);
+            } else {
+                call_user_func_array(array($facade, $name), $arguments);
+                return $this;
+            }
+        }
+    }
+    
     public function getCompositionFacade()
     {
         return $this->getServiceLocator()->get('bzlmail.composer');

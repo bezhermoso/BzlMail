@@ -116,6 +116,30 @@ class Facade  implements ServiceManager\ServiceLocatorAwareInterface
                 throw new \DomainException( $attachment . ' cannot be resolved within the file system.');
             }
             
+        } elseif(is_array($attachment)) {
+            
+            if (isset($attachment['content'])) {
+                
+                $this->addAttachment(
+                        $attachment['content'], 
+                        isset($attachment['mime_type']) ? $attachment['mime_type'] : null, 
+                        isset($attachment['name']) ? $attachment['name'] : null, 
+                        true, 
+                        isset($attachment['encoding']) ? $attachment['encoding'] : null
+                    );
+                
+            } elseif (isset($attachment['file'])) {
+                
+                $this->addAttachment(
+                        $attachment['file'], 
+                        isset($attachment['mime_type']) ? $attachment['mime_type'] : null,
+                        isset($attachment['name']) ? $attachment['name'] : null, 
+                        false, 
+                        isset($attachment['encoding']) ? $attachment['encoding'] : null
+                    );
+                
+            }
+            
         } else {
             
             throw new \InvalidArgumentException('Parameter 1 must be either instance of Zend\Mime\Part or string.');
@@ -125,14 +149,25 @@ class Facade  implements ServiceManager\ServiceLocatorAwareInterface
         return $this;
     }
     
+    public function setAttachments(array $attachments)
+    {
+        $this->attachments = array();
+        
+        foreach ($attachments as $attachment) {
+            $this->addAttachment($attachment);
+        }
+        
+        return $this;
+    }
+    
     public function __call($name, $arguments)
     {
         $message = $this->getMessage();
         if (method_exists($message, $name)) {
-            $result = call_user_func_array(array($message, $name), $arguments);
             if(preg_match('/^get/', $name)){
-                return $result;
+                return call_user_func_array(array($message, $name), $arguments);
             }else{
+                call_user_func_array(array($message, $name), $arguments);
                 return $this;
             }
         }
@@ -145,8 +180,20 @@ class Facade  implements ServiceManager\ServiceLocatorAwareInterface
            throw new \DomainException('No content specified. Cannot send.'); 
         }
         
+        $filter = new \Zend\Filter\Word\UnderscoreToCamelCase();
+        
         if ($options !== null) {
             
+            foreach ($options as $optionName => $parameters) {
+                
+                $methodName = $filter->filter('set_' . $optionName);
+                
+                if (method_exists($this, $methodName)) {
+                    call_user_method_array($methodName, $this, $parameters);
+                } else {
+                    
+                }
+            }
         }
         
         $this->prepareMessage();
