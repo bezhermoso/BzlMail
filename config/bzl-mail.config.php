@@ -3,14 +3,15 @@
 return array(
     /* Configuration options for BzlMail. */
     'bzl-mail' => array(
+        /* Transport options available for selection. */
         'transport_options' => array(
-            /* Transport options available for selection. */
             'sendmail' => 'BzlMail\Transport\Option\Sendmail',
             'smtp' => 'BzlMail\Transport\Option\Smtp',
             'gmailSmtp' => 'BzlMail\Transport\Option\GmailSmtp',
         ),
         'settings_storage_adapter' => 'BzlMail\Settings\Storage\Adapter\JsonConfig',
         
+        /* Settings for BzlMail\Composition\Facade | bzlSend controller plugin. */
         'composition_facade' => array(
             'sender_email' => 'noreply@domain.com',
             'sender_name' => 'No Reply',
