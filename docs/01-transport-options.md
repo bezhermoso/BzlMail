@@ -1,4 +1,3 @@
-
 ##Mail Transport Selection & Configuration
 
 Choosing and configuring the preferred transport to use in your application is easy -- once installed, simply head to http://yourappurl.com/email/settings
