@@ -1,0 +1,21 @@
+Date: Wed, 21 Aug 2013 08:34:44 +0000
+Subject: Subject here.
+Sender: No Reply <noreply@domain.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+ boundary="=_a691f020167efb277f7e15d66aeb995d"
+
+This is a message in Mime Format.  If you see this, your mail reader does not support this format.
+
+--=_a691f020167efb277f7e15d66aeb995d
+Content-Type: application/json
+Content-Transfer-Encoding: 8bit
+Content-Disposition: attachment; filename="settings.json"
+
+{"transport":"smtp","settings":{"username":"bezhermoso","password":"password","port":"25","host":"localhost","authentication":"plain"}}
+--=_a691f020167efb277f7e15d66aeb995d
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+
+Content here.
+--=_a691f020167efb277f7e15d66aeb995d--

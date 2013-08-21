@@ -65,7 +65,6 @@ class BzlSendTest extends \PHPUnit_Framework_TestCase
         ));
         $file2 = $this->fileTransport->getLastFile();
         
-        
         $box = new Mail\Storage\Maildir(array('dirname' => 'mailbox'));
         
         foreach ($box as $num => $message) {
