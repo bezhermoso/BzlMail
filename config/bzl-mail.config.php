@@ -10,18 +10,22 @@ return array(
             'gmailSmtp' => 'BzlMail\Transport\Option\GmailSmtp',
         ),
         'settings_storage_adapter' => 'BzlMail\Settings\Storage\Adapter\JsonConfig',
+        
+        'composition_facade' => array(
+            'sender_email' => 'noreply@domain.com',
+            'sender_name' => 'No Reply',
+            'transport' => 'bzlmail.transport',
+        )
     ),
     'service_manager' => array(
         'factories' => array(
             'BzlMail\Service\BzlMail' => 'BzlMail\Service\BzlMailFactory',
             'BzlMail\Config' => 'BzlMail\Service\ConfigFactory',
             'bzlmail.transport' => 'BzlMail\Service\TransportFactory',
+            'bzlmail.composer' => 'BzlMail\Service\CompositionFacadeFactory',
         ),
         'shared' => array(
             'bzlmail.transport' => false,
-        ),
-        'invokables' => array(
-            'bzlmail.composer' => 'BzlMail\Composition\Facade',
         )
     ),
     'controllers' => array(

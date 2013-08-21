@@ -16,9 +16,13 @@ use Zend\View\Renderer;
  */
 class BzlSend extends AbstractPlugin implements ServiceManager\ServiceLocatorAwareInterface
 {
-    public function __invoke()
+    public function __invoke(array $options = null)
     {
-        return $this->getCompositionFacade();
+        if ($options !== null) {
+            return $this->getCompositionFacade()->send($options);
+        } else {
+            return $this->getCompositionFacade();
+        }
     }
     
     public function __call($name, $arguments)
