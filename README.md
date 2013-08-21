@@ -19,4 +19,4 @@ Create the directory, `data/BzlMail`, and make sure it is writeable. A JSON file
 
 ##Documentations
 
-[Mail Transport Options & Configuration](https://github.com/bezhermoso/BzlMail/blob/master/docs/01-transport-options.md)
+* [Mail Transport Options & Configuration](https://github.com/bezhermoso/BzlMail/blob/master/docs/01-transport-options.md)
