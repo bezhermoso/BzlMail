@@ -36,8 +36,12 @@ class BzlSendTest extends \PHPUnit_Framework_TestCase
         $this->plugin = $this->serviceManager->get('bzlmail.composer');
         
         $fileOptions = new Mail\Transport\FileOptions(array(
-            'path' => 'mailbox'
+            'path' => 'mailbox/new'
         ));
+        
+        foreach (glob('mailbox/new/*') as $file) {
+            unlink($file);
+        }
         
         $this->fileTransport = new Mail\Transport\File($fileOptions);
         $this->plugin->setTransport($this->fileTransport);
@@ -48,6 +52,28 @@ class BzlSendTest extends \PHPUnit_Framework_TestCase
     {   
         $this->plugin->setSubject('Subject here.')
                      ->setContent('Content here.', 'text/plain')
+                     ->addAttachment('settings.json', 'application/json')
                      ->send();
+        $file1 = $this->fileTransport->getLastFile();
+        
+        $this->plugin->send(array(
+            'subject' => 'Subject here.',
+            'content' => 'Content here.',
+            'attachments' => array(
+                array('file' => 'settings.json', 'mime_type' => 'application/json')
+            )
+        ));
+        $file2 = $this->fileTransport->getLastFile();
+        
+        
+        $box = new Mail\Storage\Maildir(array('dirname' => 'mailbox'));
+        
+        foreach ($box as $num => $message) {
+            foreach (new \RecursiveIteratorIterator($box->getMessage($num)) as $part) {
+                var_dump($part->contentType);
+            }
+        }
+        
+        
     }
 }
